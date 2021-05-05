@@ -1,10 +1,18 @@
 from django.http import HttpResponse
-from django.template.loader import render_to_string
+from django.template.response import TemplateResponse
 from blog.models import Post
+from django.shortcuts import get_object_or_404
 
 def post_list(request):
-    body = render_to_string (
-        "post_list.html",
+    return  TemplateResponse (
+        request, "post_list.html",
         { "posts" : Post.objects.all()},
     )
-    return HttpResponse(body)
+
+def post_detail(request, post_id):
+    post = get_object_or_404(Post, id=post_id)
+    return TemplateResponse (
+        request,
+        "post_detail.html",
+        {"post" : post},
+    )
